@@ -47,7 +47,7 @@ public class ContentStore {
 	    TeamContent.loadChildren(cmService);
 	    Root.add(TeamContent);
 		ContentItem PersonalContent = new ContentItem("Personal Content", "Folder", "/content", 0);
-		PersonalContent.loadChildren(cmService);
+		//PersonalContent.loadChildren(cmService);
 		Root.add(PersonalContent);
 	}
 	
