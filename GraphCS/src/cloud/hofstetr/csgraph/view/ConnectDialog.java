@@ -122,7 +122,7 @@ public class ConnectDialog extends JDialog {
 	}
 	
 	public String getPassword() {
-		return passwordField.getPassword().toString();
+		return new String(passwordField.getPassword());
 	}
 	
 }
