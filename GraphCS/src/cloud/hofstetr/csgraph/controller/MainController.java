@@ -54,11 +54,10 @@ public class MainController {
 				namespace = connectDialog.getNamespace();
 				userid = connectDialog.getUserID();
 				password = connectDialog.getPassword();
-				System.out.println("Password is: " + password);
 				connectDialog.dispose();
 				connectDialog = null;
-				ContentStore cs = new ContentStore();
-				//ContentStore cs = new ContentStore(dispatcher, namespace, userid, password);
+				//ContentStore cs = new ContentStore();
+				ContentStore cs = new ContentStore(dispatcher, namespace, userid, password);
 				contentFrame.addTree(cs.getRoot());
 			}
 			else {
