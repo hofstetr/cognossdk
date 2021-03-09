@@ -48,6 +48,7 @@ public class ContentStore {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (ServiceException e) {
+			System.out.println("Failed to log on as " + userid + " using " + password);
 			e.printStackTrace();
 		}
 			
