@@ -48,7 +48,6 @@ public class ContentStore {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (ServiceException e) {
-			System.out.println("Failed to log on as " + userid + " using " + password);
 			e.printStackTrace();
 		}
 			
@@ -78,7 +77,7 @@ public class ContentStore {
 			cmService.logon(xmlCredentials, null);
 			getSetHeaders();
 		} catch (RemoteException e) {
-			System.out.println("Failed to log on.");
+			System.out.println("Failed to log on as " + userid + " using " + password);
 			e.printStackTrace();
 			return false;
 		}
