@@ -1,5 +1,8 @@
 package cloud.hofstetr.csgraph.view;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
 import cloud.hofstetr.csgraph.model.ContentItem;
 
@@ -9,6 +12,11 @@ public class ContentFrame extends JFrame {
 	
 	public ContentFrame () {
 		super("Content Store Grapher");
+		addWindowListener(new WindowAdapter() {
+	         public void windowClosing(WindowEvent windowEvent){
+	            System.exit(0);
+	         }        
+	      }); 
 		contentPanel = new ContentPanel(this);
 		contentPanel.addPiePanel();
 	}

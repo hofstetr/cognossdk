@@ -3,6 +3,7 @@ package cloud.hofstetr.csgraph.view;
 import java.text.DecimalFormat;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
@@ -46,7 +47,9 @@ public class ContentPanel extends JPanel {
 		        updatePiePanel(node);
 		    }
 		});
-		SplitPane.setLeftComponent(tree);
+		SplitPane.setLeftComponent(new JScrollPane(tree,
+			      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+			      JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 		updateDividerLocation();
 	}
 	
