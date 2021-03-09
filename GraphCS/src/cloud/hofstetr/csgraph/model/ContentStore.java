@@ -17,7 +17,7 @@ import com.cognos.org.apache.axis.message.SOAPHeaderElement;
 public class ContentStore {
 	private ContentManagerService_ServiceLocator cmServiceLocator = null;
 	private ContentManagerService_PortType cmService = null;
-	private ContentItem Root = new ContentItem("Content Store", "Folder", "/", 0);
+	private ContentItem Root = new ContentItem("Content Store", "Folder", "/", 100);
 	private String BiBus_NS = "http://developer.cognos.com/schemas/bibus/3/";
 	private String BiBus_H = "biBusHeader";
 	
@@ -25,7 +25,19 @@ public class ContentStore {
 		return Root;
 	}
     
-	public ContentStore(String dispatcher, String namespace, String userid, String password) {
+	public ContentStore() {
+        // Create team content structure for testing
+	    ContentItem TeamContent = new ContentItem("Team Content", "Folder", "/content", 80);
+	    ContentItem TeamChild1 = new ContentItem("Team Child1", "Folder", "/content/child1", 40);
+	    ContentItem TeamChild2 = new ContentItem("Team Child2", "Folder", "/content/child2", 40);
+	    TeamContent.add(TeamChild1);
+	    TeamContent.add(TeamChild2);
+	    Root.add(TeamContent);
+		ContentItem PersonalContent = new ContentItem("Personal Content", "Folder", "/content", 20);
+		Root.add(PersonalContent);
+	}
+	
+    public ContentStore(String dispatcher, String namespace, String userid, String password) {
 		// First connect to Cognos and authenticate
 		cmServiceLocator = new ContentManagerService_ServiceLocator();
 		

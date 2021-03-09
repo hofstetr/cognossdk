@@ -101,4 +101,8 @@ public class ContentItem extends DefaultMutableTreeNode {
 	public void setObjectType(String objectType) {
 		this.objectType = objectType;
 	}
+	
+	public String toString() {
+		return getDefaultName();
+	}
 }

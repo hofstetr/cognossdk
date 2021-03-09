@@ -1,18 +1,11 @@
 package cloud.hofstetr.csgraph;
 
-import cloud.hofstetr.csgraph.model.ContentStore;
+import cloud.hofstetr.csgraph.controller.MainController;
 
 public class Main {
 
 	public static void main(String[] args) {
-		String dispatcher = "http://localhost:9300/p2pd/servlet/dispatch";
-		String namespace = "ldap";
-		String userid = "username";
-		String password = "password";
-		
-		ContentStore test = new ContentStore(dispatcher, namespace, userid, password);
-		
-
+		MainController app = new MainController();
+		app.start();
 	}
-
 }
