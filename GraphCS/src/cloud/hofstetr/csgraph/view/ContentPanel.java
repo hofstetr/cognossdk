@@ -66,7 +66,7 @@ public class ContentPanel extends JPanel {
 			ContentItem child = (ContentItem) node.getChildAt(i);
 			dataset.setValue(child.getDefaultName(), child.getDataSize());
 		}
-		JFreeChart chart = ChartFactory.createPieChart3D(node.getDefaultName(), dataset, true, true, false);  
+		JFreeChart chart = ChartFactory.createPieChart3D(node.getDefaultName(), dataset, false, true, false);  
 			  
 		//Format Labels
 		PieSectionLabelGenerator labelGenerator = new StandardPieSectionLabelGenerator(  

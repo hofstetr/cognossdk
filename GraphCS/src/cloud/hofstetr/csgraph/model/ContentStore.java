@@ -36,19 +36,23 @@ public class ContentStore {
 			java.net.URL serverURL = new java.net.URL(dispatcher);
 			cmService = cmServiceLocator.getcontentManagerService(serverURL);
 			logonWithCreds(namespace, userid, password);
+			
+			// Create and load team content structure
+			ContentItem TeamContent = new ContentItem("Team Content", "Folder", "/content", 0);
+			TeamContent.loadChildren(cmService);
+			Root.add(TeamContent);
+			ContentItem PersonalContent = new ContentItem("Personal Content", "Folder", "/content", 0);
+			//PersonalContent.loadChildren(cmService);
+			Root.add(PersonalContent);
+			cmService.logoff();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (ServiceException e) {
 			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-			
-		// Create and load team content structure
-	    ContentItem TeamContent = new ContentItem("Team Content", "Folder", "/content", 0);
-	    TeamContent.loadChildren(cmService);
-	    Root.add(TeamContent);
-		ContentItem PersonalContent = new ContentItem("Personal Content", "Folder", "/content", 0);
-		//PersonalContent.loadChildren(cmService);
-		Root.add(PersonalContent);
 	}
 	
 	public boolean logonWithCreds(String namespace, String userid, String password) {
