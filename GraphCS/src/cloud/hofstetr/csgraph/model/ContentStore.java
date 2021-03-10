@@ -38,11 +38,11 @@ public class ContentStore {
 			logonWithCreds(namespace, userid, password);
 			
 			// Create and load team content structure
-			ContentItem TeamContent = new ContentItem("Team Content", "Folder", "/content", 0);
+			ContentItem TeamContent = new ContentItem("Team Content", "Folder", "/content/*", 0);
 			TeamContent.loadChildren(cmService);
 			Root.add(TeamContent);
-			ContentItem PersonalContent = new ContentItem("Personal Content", "Folder", "/content", 0);
-			//PersonalContent.loadChildren(cmService);
+			ContentItem PersonalContent = new ContentItem("Personal Content", "Folder", "CAMID(\"" + namespace + "\")//account/folder[@name='My Folders']", 0);
+			PersonalContent.loadChildren(cmService);
 			Root.add(PersonalContent);
 			cmService.logoff();
 		} catch (MalformedURLException e) {

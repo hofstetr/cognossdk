@@ -39,7 +39,7 @@ public class ContentItem extends DefaultMutableTreeNode {
 	     
 		try {
 			// Make the query.
-			BaseClass[] siblings = cmService.query(new SearchPathMultipleObject(getSearchPath() + "/*"), properties, sortBy, options);
+			BaseClass[] siblings = cmService.query(new SearchPathMultipleObject(getSearchPath()), properties, sortBy, options);
 	
 			// Build results for this level.
 			for (int i = 0; i < siblings.length; i++) {
