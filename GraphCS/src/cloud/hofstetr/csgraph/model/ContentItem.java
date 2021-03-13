@@ -39,7 +39,7 @@ public class ContentItem extends DefaultMutableTreeNode {
 	     
 		try {
 			// Make the query.
-			BaseClass[] siblings = cmService.query(new SearchPathMultipleObject(getSearchPath()), properties, sortBy, options);
+			BaseClass[] siblings = cmService.query(new SearchPathMultipleObject(getSearchPath() + "/*"), properties, sortBy, options);
 	
 			// Build results for this level.
 			for (int i = 0; i < siblings.length; i++) {
@@ -64,6 +64,43 @@ public class ContentItem extends DefaultMutableTreeNode {
 		}
 	    System.out.println("The size of " + getDefaultName() + " is " + getDataSize());
 		return getDataSize();
+	}
+	
+	public void loadTeamContent(ContentManagerService_PortType cmService) {
+		// No extra processing required for team content
+		loadChildren(cmService);
+	}
+	
+	public void loadPersonalContent(ContentManagerService_PortType cmService) {
+		// Need to fetch each personal my folder and then load the children
+		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass };
+	
+		// Sort options: ascending sort on the defaultName property.
+		Sort[] sortBy = { new Sort()};
+		sortBy[0].setOrder(OrderEnum.ascending);
+		sortBy[0].setPropName(PropEnum.defaultName);
+	
+		// Query options; use the defaults.
+		QueryOptions options = new QueryOptions();
+	     
+		try {
+			// Make the query.
+			BaseClass[] folders = cmService.query(new SearchPathMultipleObject(getSearchPath()), properties, sortBy, options);
+	
+			// Build results for this level.
+			for (int i = 0; i < folders.length; i++) {
+				String theDefaultName = folders[i].getDefaultName().getValue();
+				String theSearchPath = folders[i].getSearchPath().getValue();
+				String theType = folders[i].getObjectClass().toString();
+				double dataSize = 0; 
+				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, dataSize);
+				addSize(item.loadChildren(cmService));
+				this.add(item);
+	        }
+	    }
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	void addSize(double size) {

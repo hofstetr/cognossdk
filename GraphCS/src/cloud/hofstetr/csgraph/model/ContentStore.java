@@ -39,10 +39,10 @@ public class ContentStore {
 			
 			// Create and load team content structure
 			ContentItem TeamContent = new ContentItem("Team Content", "Folder", "/content/*", 0);
-			TeamContent.loadChildren(cmService);
+			TeamContent.loadTeamContent(cmService);
 			Root.add(TeamContent);
 			ContentItem PersonalContent = new ContentItem("Personal Content", "Folder", "CAMID(\"" + namespace + "\")//account/folder[@name='My Folders']", 0);
-			PersonalContent.loadChildren(cmService);
+			PersonalContent.loadPersonalContent(cmService);
 			Root.add(PersonalContent);
 			cmService.logoff();
 		} catch (MalformedURLException e) {
