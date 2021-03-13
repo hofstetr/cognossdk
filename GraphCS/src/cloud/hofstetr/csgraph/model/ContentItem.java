@@ -4,6 +4,7 @@ import javax.swing.tree.*;
 
 import com.cognos.developer.schemas.bibus._3.BaseClass;
 import com.cognos.developer.schemas.bibus._3.ContentManagerService_PortType;
+import com.cognos.developer.schemas.bibus._3.Folder;
 import com.cognos.developer.schemas.bibus._3.OrderEnum;
 import com.cognos.developer.schemas.bibus._3.Output;
 import com.cognos.developer.schemas.bibus._3.PropEnum;
@@ -89,9 +90,10 @@ public class ContentItem extends DefaultMutableTreeNode {
 	
 			// Build results for this level.
 			for (int i = 0; i < folders.length; i++) {
-				String theDefaultName = folders[i].getDefaultName().getValue();
-				String theSearchPath = folders[i].getSearchPath().getValue();
-				String theType = folders[i].getObjectClass().toString();
+				Folder myFolder = ((Folder)folders[i]);
+				String theDefaultName = myFolder.getParent().getValue()[0].getDefaultName().getValue();
+				String theSearchPath = myFolder.getSearchPath().getValue();
+				String theType = myFolder.getObjectClass().toString();
 				double dataSize = 0; 
 				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, dataSize);
 				addSize(item.loadChildren(cmService));
