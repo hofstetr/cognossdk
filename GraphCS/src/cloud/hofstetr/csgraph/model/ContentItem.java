@@ -74,7 +74,7 @@ public class ContentItem extends DefaultMutableTreeNode {
 	
 	public void loadPersonalContent(ContentManagerService_PortType cmService) {
 		// Need to fetch each personal my folder and then load the children
-		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass };
+		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass, PropEnum.parent };
 	
 		// Sort options: ascending sort on the defaultName property.
 		Sort[] sortBy = { new Sort()};
