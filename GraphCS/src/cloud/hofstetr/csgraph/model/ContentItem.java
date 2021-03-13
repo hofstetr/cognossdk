@@ -92,7 +92,7 @@ public class ContentItem extends DefaultMutableTreeNode {
 			for (int i = 0; i < folders.length; i++) {
 				Folder myFolder = ((Folder)folders[i]);
 				
-				String parentSearchPath = getDefaultName().substring(0, getDefaultName().length() - 27);
+				String parentSearchPath = getDefaultName().substring(1, getDefaultName().length() - 27);
 				BaseClass[] parent = cmService.query(new SearchPathMultipleObject(parentSearchPath), properties, sortBy, options);
 				String theDefaultName = parent[0].getDefaultName().getValue();
 				String theSearchPath = myFolder.getSearchPath().getValue();
