@@ -74,7 +74,7 @@ public class ContentItem extends DefaultMutableTreeNode {
 	
 	public void loadPersonalContent(ContentManagerService_PortType cmService) {
 		// Need to fetch each personal my folder and then load the children
-		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass, PropEnum.parent };
+		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass };
 	
 		// Sort options: ascending sort on the defaultName property.
 		Sort[] sortBy = { new Sort()};
@@ -91,7 +91,10 @@ public class ContentItem extends DefaultMutableTreeNode {
 			// Build results for this level.
 			for (int i = 0; i < folders.length; i++) {
 				Folder myFolder = ((Folder)folders[i]);
-				String theDefaultName = myFolder.getParent().getValue()[0].getDefaultName().getValue();
+				
+				String parentSearchPath = getDefaultName().substring(0, getDefaultName().length() - 27);
+				BaseClass[] parent = cmService.query(new SearchPathMultipleObject(parentSearchPath), properties, sortBy, options);
+				String theDefaultName = parent[0].getDefaultName().getValue();
 				String theSearchPath = myFolder.getSearchPath().getValue();
 				String theType = myFolder.getObjectClass().toString();
 				double dataSize = 0; 
