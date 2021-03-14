@@ -9,6 +9,7 @@ import com.cognos.developer.schemas.bibus._3.OrderEnum;
 import com.cognos.developer.schemas.bibus._3.Output;
 import com.cognos.developer.schemas.bibus._3.PropEnum;
 import com.cognos.developer.schemas.bibus._3.QueryOptions;
+import com.cognos.developer.schemas.bibus._3.Report;
 import com.cognos.developer.schemas.bibus._3.SearchPathMultipleObject;
 import com.cognos.developer.schemas.bibus._3.Sort;
 
@@ -28,7 +29,7 @@ public class ContentItem extends DefaultMutableTreeNode {
      
 	public double loadChildren(ContentManagerService_PortType cmService) {
 		// Search properties: we need the defaultName, searchPath, type of object and size of data.
-		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass, PropEnum.dataSize };
+		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass, PropEnum.dataSize, PropEnum.specification };
 	
 		// Sort options: ascending sort on the defaultName property.
 		Sort[] sortBy = { new Sort()};
@@ -53,6 +54,12 @@ public class ContentItem extends DefaultMutableTreeNode {
 				if (siblings[i] instanceof Output) {
 					Output reportOutput = (Output)siblings[i];
 					dataSize = reportOutput.getDataSize().getValue().doubleValue();
+					addSize(dataSize);
+	        	}
+				// Get the report specification size if this is a report object
+				if (siblings[i] instanceof Report) {
+					Report report = (Report)siblings[i];
+					dataSize = report.getSpecification().getValue().length();
 					addSize(dataSize);
 	        	}
 				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, dataSize);
