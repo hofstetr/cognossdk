@@ -73,6 +73,9 @@ public class ContentItem extends DefaultMutableTreeNode {
 				addSize(item.loadChildren(cmService));
 				this.add(item);
 	        }
+			
+			// This object will presist in the tree so free up space
+			siblings = null;
 	    }
 		catch(Exception e) {
 			e.printStackTrace();
@@ -117,6 +120,9 @@ public class ContentItem extends DefaultMutableTreeNode {
 				addSize(item.loadChildren(cmService));
 				this.add(item);
 	        }
+			
+			// This object will presist in the tree so free up space
+			folders = null;
 	    }
 		catch(Exception e) {
 			e.printStackTrace();
