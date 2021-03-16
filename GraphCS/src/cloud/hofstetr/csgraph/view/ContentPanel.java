@@ -64,7 +64,12 @@ public class ContentPanel extends JPanel {
 		// The dataset is the size of the children under the selected node
 		for(int i=0; i<node.getChildCount(); i++) {
 			ContentItem child = (ContentItem) node.getChildAt(i);
-			dataset.setValue(child.getDefaultName(), child.getDataSize());
+			if (child.getDataSize() > 0) {
+				dataset.setValue(child.getDefaultName(), child.getDataSize());
+			}
+			else {
+				dataset.setValue("Other", 0);
+			}
 		}
 		JFreeChart chart = ChartFactory.createPieChart3D(node.getDefaultName(), dataset, false, true, false);  
 			  
