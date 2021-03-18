@@ -1,6 +1,7 @@
 package cloud.hofstetr.csgraph.view;
 
 import java.text.DecimalFormat;
+import org.apache.log4j.*;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,33 +25,40 @@ public class ContentPanel extends JPanel {
 	private static final long serialVersionUID = 8727700150613116574L;
 	private JSplitPane SplitPane;
 	private JTree tree;
-
+	static Logger logger = Logger.getLogger(ContentPanel.class.getName());
 	
 	public ContentPanel(ContentFrame frame) {
+		logger.debug("Creating main content panel");
 		SplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		logger.debug("Adding split pane to main content panel");
 		SplitPane.setContinuousLayout(true);
 	    SplitPane.setOneTouchExpandable(true);
 		frame.setContentPane(SplitPane);
+		logger.debug("Finished creating main content panel");
 	}
 	
 	public void addTreePanel(ContentItem root) {
+		logger.debug("Creating Tree panel");
 		tree = new JTree(root);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
 		    public void valueChanged(TreeSelectionEvent e) {
+		    	logger.debug("Tree item selected");
 		        ContentItem node = (ContentItem)tree.getLastSelectedPathComponent();
-
-		        /* if nothing is selected */ 
-		        if (node == null) return;
+		        logger.debug(node.getDefaultName() + " was selected");
 		        
-		        // update the pie chart to the selected tree node
-		        updatePiePanel(node);
+		        /* if nothing is selected */ 
+		        if (node != null) {
+			        // update the pie chart to the selected tree node
+			        updatePiePanel(node);
+		        }
 		    }
 		});
 		SplitPane.setLeftComponent(new JScrollPane(tree,
 			      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 			      JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 		updateDividerLocation();
+		logger.debug("Finished creating Tree panel");
 	}
 	
 	public void addPiePanel() {
@@ -59,17 +67,20 @@ public class ContentPanel extends JPanel {
 	}
 	
 	public void updatePiePanel(ContentItem node) {
+		logger.debug("Updating Pie chart");
 		DefaultPieDataset dataset=new DefaultPieDataset();
 		
-		// The dataset is the size of the children under the selected node
-		System.out.println("There are " + node.getChildCount() + " slices.");
 		for(int i=0; i<node.getChildCount(); i++) {
 			ContentItem child = (ContentItem) node.getChildAt(i);
 			
 			// Only add pie slices for nodes that actually have data
 			if (child.getDataSize() > 0) {
+				logger.debug("Adding content item " + child.getDefaultName() + " to Pie chart");
 				dataset.setValue(child.getDefaultName(), child.getDataSize());
 			}
+			
+			// The dataset is the size of the children under the selected node
+			logger.debug("There are " + dataset.getItemCount() + " slices");
 		}
 		JFreeChart chart = ChartFactory.createPieChart3D(node.getDefaultName(), dataset, false, true, false);  
 			  
@@ -88,10 +99,13 @@ public class ContentPanel extends JPanel {
 		ChartPanel panel = new ChartPanel(chart);
 		SplitPane.setRightComponent(panel);
 		updateDividerLocation();
+		logger.debug("Finished updating Pie chart");
 	}
 	
 	public void updateDividerLocation() {
+		logger.debug("Updating divider position");
 		int loc = (int) ((SplitPane.getBounds().getWidth() - SplitPane.getDividerSize()) / 4);
 		SplitPane.setDividerLocation(loc);
+		logger.debug("Finished updating divider position");
 	}
 }

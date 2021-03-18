@@ -6,6 +6,8 @@ import java.rmi.RemoteException;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ServiceException;
 
+import org.apache.log4j.Logger;
+
 import com.cognos.developer.schemas.bibus._3.BiBusHeader;
 import com.cognos.developer.schemas.bibus._3.ContentManagerService_PortType;
 import com.cognos.developer.schemas.bibus._3.ContentManagerService_ServiceLocator;
@@ -20,6 +22,7 @@ public class ContentStore {
 	private ContentItem Root = new ContentItem("Content Store", "Folder", "/", 100);
 	private String BiBus_NS = "http://developer.cognos.com/schemas/bibus/3/";
 	private String BiBus_H = "biBusHeader";
+	static Logger logger = Logger.getLogger(ContentStore.class.getName());
 	
     public ContentItem getRoot() {
 		return Root;
@@ -34,8 +37,17 @@ public class ContentStore {
 		
 		try {
 			java.net.URL serverURL = new java.net.URL(dispatcher);
+			logger.debug("Connecting to Cognos at: " + dispatcher);
 			cmService = cmServiceLocator.getcontentManagerService(serverURL);
-			logonWithCreds(namespace, userid, password);
+			
+			if (userid == null) {
+				logger.debug("Logging on anonymously");
+				logonWithAnonymous();
+			}
+			else {
+				logger.debug("Authenticating to Cognos as " + userid);
+				logonWithCreds(namespace, userid, password);
+			}
 			
 			// Create and load team content structure
 			ContentItem TeamContent = new ContentItem("Team Content", "Folder", "/content", 0);
@@ -44,14 +56,14 @@ public class ContentStore {
 			ContentItem PersonalContent = new ContentItem("Personal Content", "Folder", "CAMID(\"" + namespace + "\")//account/folder[@name='My Folders']", 0);
 			PersonalContent.loadPersonalContent(cmService);
 			Root.add(PersonalContent);
+			logger.debug("Logging off");
 			cmService.logoff();
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			logger.info("Invalid URL encountered");
 		} catch (ServiceException e) {
-			e.printStackTrace();
+			logger.info("Failed to connect to Cognos");
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info("Failed to log off of Cognos");
 		}
 	}
 	
@@ -72,8 +84,7 @@ public class ContentStore {
 			cmService.logon(xmlCredentials, null);
 			getSetHeaders();
 		} catch (RemoteException e) {
-			System.out.println("Failed to log on as " + userid + " using " + password);
-			e.printStackTrace();
+			logger.info("Failed to log on as " + userid);
 			return false;
 		}
 		return true;
@@ -84,7 +95,7 @@ public class ContentStore {
 			((Stub)cmService).clearHeaders();
 			cmService.query(new SearchPathMultipleObject("~"), null, null, null);
 		} catch (RemoteException e) {
-			System.out.println("Failed to log on.");
+			logger.info("Failed to log on anonymously.");
 			return false;
 		}
 		return true;
@@ -97,7 +108,7 @@ public class ContentStore {
 			 CMbibus = (BiBusHeader)temp.getValueAsType(new QName(BiBus_NS, BiBus_H));
 		 }
 		 catch (Exception e)	{
-			 System.out.println("Failed to log on.");
+			 logger.info("Failed to preserve authentication header");
 		 }
 	
 		 if (CMbibus != null) {
