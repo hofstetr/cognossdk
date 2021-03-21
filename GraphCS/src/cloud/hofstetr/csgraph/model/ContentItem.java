@@ -112,7 +112,7 @@ public class ContentItem extends DefaultMutableTreeNode {
 		// Create alphabetical grouping nodes so that a single pie chart will have a manageable number of slices
 		String alphabet = "abcdefghijklmnopqrstuvwxyz";
 		for (int i=0; i<alphabet.length()-1; i++) {
-			ContentItem ci = new ContentItem(alphabet.substring(i,1), "Folder", alphabet.substring(i,1), 0);
+			ContentItem ci = new ContentItem(alphabet.substring(i,i+1), "Folder", alphabet.substring(i,i+1), 0);
 			this.add(ci);
 		}
 		
