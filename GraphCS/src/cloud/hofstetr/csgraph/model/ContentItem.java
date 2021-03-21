@@ -67,14 +67,18 @@ public class ContentItem extends DefaultMutableTreeNode {
 				// Get the report specification size if this is a report object
 				if (siblings[i] instanceof Report) {
 					Report report = (Report)siblings[i];
-					dataSize = report.getSpecification().getValue().length();
+					if (report.getSpecification() != null) {
+						dataSize = report.getSpecification().getValue().length();
+					}
 					logger.debug("Specification length of " + theDefaultName + " is " + dataSize);
 					addSize(dataSize);
 	        	}
 				// Get the report specification size if this is a report object
 				if (siblings[i] instanceof Model) {
 					Model model = (Model)siblings[i];
-					dataSize = model.getModel().getValue().length();
+					if (model.getModel() != null) {
+						dataSize = model.getModel().getValue().length();
+					}
 					logger.debug("Model length of " + theDefaultName + " is " + dataSize);
 					addSize(dataSize);
 	        	}
