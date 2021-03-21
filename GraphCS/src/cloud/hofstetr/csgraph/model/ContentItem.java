@@ -91,7 +91,7 @@ public class ContentItem extends DefaultMutableTreeNode {
 			siblings = null;
 	    }
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.debug(e.getStackTrace());
 		}
 	    logger.debug("The total size of " + getDefaultName() + " is " + getDataSize());
 	    logger.debug("Finished loading children of " + getDefaultName());
@@ -159,7 +159,7 @@ public class ContentItem extends DefaultMutableTreeNode {
 			folders = null;
 	    }
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.debug(e.getStackTrace());
 		}
 		finally {
 			logger.debug("Finished loading Team Content");
