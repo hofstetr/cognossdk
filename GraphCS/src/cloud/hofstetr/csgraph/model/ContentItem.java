@@ -151,7 +151,9 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 				Collections.sort(alphabetNode.children);
 				
 				logger.debug("Getting children of account " + theDefaultName);
-				alphabetNode.addSize(item.loadChildren(cmService));
+				double size = item.loadChildren(cmService);
+				alphabetNode.addSize(size);
+				addSize(size);
 				logger.debug("The total size of " + item.getDefaultName() + " is " + item.getDataSize());
 	        }
 			
