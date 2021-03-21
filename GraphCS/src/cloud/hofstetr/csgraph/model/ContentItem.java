@@ -1,5 +1,7 @@
 package cloud.hofstetr.csgraph.model;
 
+import java.util.Collections;
+
 import javax.swing.tree.*;
 
 import org.apache.log4j.Logger;
@@ -99,6 +101,7 @@ public class ContentItem extends DefaultMutableTreeNode {
 		logger.debug("Finished loading Team Content");
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void loadPersonalContent(ContentManagerService_PortType cmService) {
 		logger.debug("Loading Personal Content");
 		
@@ -114,8 +117,6 @@ public class ContentItem extends DefaultMutableTreeNode {
 	
 		// Sort options: ascending sort on the defaultName property.
 		Sort[] sortBy = { new Sort()};
-		sortBy[0].setOrder(OrderEnum.ascending);
-		sortBy[0].setPropName(PropEnum.defaultName);
 	
 		// Query options; use the defaults.
 		QueryOptions options = new QueryOptions();
@@ -143,6 +144,7 @@ public class ContentItem extends DefaultMutableTreeNode {
 				ContentItem alphabetNode = ((ContentItem)this.getChildAt(nodeIndex));
 				logger.debug("Adding account " + theDefaultName + " to alphabetical group " + alphabetNode.getDefaultName());
 				alphabetNode.add(item);
+				Collections.sort(alphabetNode.children);
 				
 				logger.debug("Getting children of account " + theDefaultName);
 				alphabetNode.addSize(item.loadChildren(cmService));
