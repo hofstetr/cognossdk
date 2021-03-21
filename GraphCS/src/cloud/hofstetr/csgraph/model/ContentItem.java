@@ -101,6 +101,14 @@ public class ContentItem extends DefaultMutableTreeNode {
 	
 	public void loadPersonalContent(ContentManagerService_PortType cmService) {
 		logger.debug("Loading Personal Content");
+		
+		// Create alphabetical grouping nodes so that a single pie chart will have a manageable number of slices
+		String alphabet = "abcdefghijklmnopqrstuvwxyz";
+		for (int i=0; i<alphabet.length(); i++) {
+			ContentItem ci = new ContentItem(alphabet.substring(i,1), "Folder", alphabet.substring(i,1), 0);
+			this.add(ci);
+		}
+		
 		// Need to fetch each personal my folder and then load the children
 		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass };
 	
@@ -116,7 +124,8 @@ public class ContentItem extends DefaultMutableTreeNode {
 			// Make the query.
 			BaseClass[] folders = cmService.query(new SearchPathMultipleObject(getSearchPath()), properties, sortBy, options);
 			logger.debug("There are " + folders.length + " children");
-			// Build results for this level.
+			
+			// Iterate over personal folders and group them alphabetically
 			for (int i = 0; i < folders.length; i++) {
 				Folder myFolder = ((Folder)folders[i]);
 				String theSearchPath = myFolder.getSearchPath().getValue();
@@ -127,12 +136,17 @@ public class ContentItem extends DefaultMutableTreeNode {
 				String theDefaultName = parent[0].getDefaultName().getValue();
 				logger.debug("Found account " + theDefaultName);
 				String theType = myFolder.getObjectClass().toString();
-				double dataSize = 0; 
-				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, dataSize);
+				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, 0);
+			
+				// Figure out which alphabet grouping to add this account to by first letter
+				int nodeIndex = alphabet.indexOf(theDefaultName.substring(0,1).toLowerCase());
+				ContentItem alphabetNode = ((ContentItem)this.getChildAt(nodeIndex));
+				logger.debug("Adding account " + theDefaultName + " to alphabetical group " + alphabetNode.getDefaultName());
+				alphabetNode.add(item);
+				
 				logger.debug("Getting children of account " + theDefaultName);
-				addSize(item.loadChildren(cmService));
-				logger.debug("The total size of " + getDefaultName() + " is " + getDataSize());
-				this.add(item);
+				alphabetNode.addSize(item.loadChildren(cmService));
+				logger.debug("The total size of " + item.getDefaultName() + " is " + item.getDataSize());
 	        }
 			
 			// This object will persist in the tree so free up space
