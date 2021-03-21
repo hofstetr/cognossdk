@@ -18,7 +18,7 @@ import com.cognos.developer.schemas.bibus._3.Report;
 import com.cognos.developer.schemas.bibus._3.SearchPathMultipleObject;
 import com.cognos.developer.schemas.bibus._3.Sort;
 
-public class ContentItem extends DefaultMutableTreeNode {
+public class ContentItem extends DefaultMutableTreeNode implements Comparable<ContentItem>{
 	private static final long serialVersionUID = 8727700150613116574L;
 	private String defaultName;
 	private String searchPath;
@@ -204,5 +204,10 @@ public class ContentItem extends DefaultMutableTreeNode {
 	
 	public String toString() {
 		return getDefaultName();
+	}
+
+	@Override
+	public int compareTo(ContentItem o) {
+		return this.defaultName.compareTo(o.getDefaultName());
 	}
 }
