@@ -9,12 +9,14 @@ import cloud.hofstetr.csgraph.model.ContentStore;
 import cloud.hofstetr.csgraph.view.ConnectDialog;
 import cloud.hofstetr.csgraph.view.ContentFrame;
 import cloud.hofstetr.csgraph.view.ContentMenu;
+import cloud.hofstetr.csgraph.view.ProgressDialog;
 
 public class MainController {
 	private ContentFrame contentFrame;
 	private ContentMenu contentMenu;
 	private ContentStore contentStore;
 	private ConnectDialog connectDialog;
+	private ProgressDialog progressDialog;
 	private String dispatcher = "http://localhost:9300/p2pd/servlet/dispatch";
 	private String namespace = "ldap";
 	private String userid = "cognos";
@@ -56,9 +58,11 @@ public class MainController {
 				password = connectDialog.getPassword();
 				connectDialog.dispose();
 				connectDialog = null;
-				//ContentStore cs = new ContentStore();
-				ContentStore cs = new ContentStore(dispatcher, namespace, userid, password);
+				progressDialog = new ProgressDialog();
+				ContentStore cs = new ContentStore(dispatcher, namespace, userid, password, progressDialog.getBar());
 				contentFrame.addTree(cs.getRoot());
+				progressDialog.dispose();
+				progressDialog = null;
 			}
 			else {
 				connectDialog.dispose();

@@ -3,6 +3,7 @@ package cloud.hofstetr.csgraph.model;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 
+import javax.swing.JProgressBar;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ServiceException;
 
@@ -31,7 +32,7 @@ public class ContentStore {
 	public ContentStore() {
 	}
 	
-    public ContentStore(String dispatcher, String namespace, String userid, String password) {
+    public ContentStore(String dispatcher, String namespace, String userid, String password, JProgressBar bar) {
 		// First connect to Cognos and authenticate
 		cmServiceLocator = new ContentManagerService_ServiceLocator();
 		
@@ -49,13 +50,23 @@ public class ContentStore {
 				logonWithCreds(namespace, userid, password);
 			}
 			
-			// Create and load team content structure
-			ContentItem TeamContent = new ContentItem("Team Content", "Folder", "/content", 0);
-			TeamContent.loadTeamContent(cmService);
-			Root.add(TeamContent);
+			 
+			
+			// Create team content and personal content nodes
+			ContentItem TeamContent = new ContentItem("Team Content", "Folder", "/content/*", 0);
 			ContentItem PersonalContent = new ContentItem("Personal Content", "Folder", "CAMID(\"" + namespace + "\")//account/folder[@name='My Folders']", 0);
-			PersonalContent.loadPersonalContent(cmService);
+			
+			// Get the count of children for both team content and personal content to update the progress bar
+			int count = TeamContent.length(cmService) + PersonalContent.length(cmService);
+			bar.setMaximum(count);
+			
+			// Load the children
+			TeamContent.loadTeamContent(cmService, bar);
+			Root.add(TeamContent);
+			
+			PersonalContent.loadPersonalContent(cmService, bar);
 			Root.add(PersonalContent);
+			
 			logger.debug("Logging off");
 			cmService.logoff();
 		} catch (MalformedURLException e) {

@@ -22,7 +22,7 @@ public class ContentFrame extends JFrame {
 	}
 	
 	public void loadFrame() {
-		this.setSize(500, 500);
+		this.setSize(600, 400);
 		this.setVisible(true);
 		this.setResizable(true);
 	}

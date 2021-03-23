@@ -2,6 +2,7 @@ package cloud.hofstetr.csgraph.model;
 
 import java.util.Collections;
 
+import javax.swing.JProgressBar;
 import javax.swing.tree.*;
 
 import org.apache.log4j.Logger;
@@ -98,15 +99,50 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 		return getDataSize();
 	}
 	
-	public void loadTeamContent(ContentManagerService_PortType cmService) {
+	public void loadTeamContent(ContentManagerService_PortType cmService, JProgressBar bar) {
 		logger.debug("Loading Team Content");
-		// Need to fetch each team content folder and then load the children
-		loadChildren(cmService);
-		logger.debug("Finished loading Team Content");
+		
+		// Search properties: we need the defaultName, searchPath, type of object and size of data.
+		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass};
+	
+		// Sort options: ascending sort on the defaultName property.
+		Sort[] sortBy = { new Sort()};
+		sortBy[0].setOrder(OrderEnum.ascending);
+		sortBy[0].setPropName(PropEnum.defaultName);
+	
+		// Query options; use the defaults.
+		QueryOptions options = new QueryOptions();
+	     
+		try {
+			// Make the query.
+			BaseClass[] folders = cmService.query(new SearchPathMultipleObject(getSearchPath()), properties, sortBy, options);
+			
+			// Iterate over team content folders and crawl their children
+			for (int i = 0; i < folders.length; i++) {
+				Folder teamFolder = ((Folder)folders[i]);
+				String theSearchPath = teamFolder.getSearchPath().getValue();
+				String theDefaultName = teamFolder.getDefaultName().getValue();
+				logger.debug("Found folder " + theDefaultName);
+				String theType = teamFolder.getObjectClass().toString();
+				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, 0);
+				this.add(item);
+				logger.debug("Getting children of folder " + theDefaultName);
+				double size = item.loadChildren(cmService);
+				addSize(size);
+				logger.debug("The total size of " + item.getDefaultName() + " is " + item.getDataSize());
+				bar.setValue(bar.getValue() + 1);
+			}
+		}
+		catch(Exception e) {
+			logger.debug(e);
+		}
+		finally {
+			logger.debug("Finished loading Team Content");
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void loadPersonalContent(ContentManagerService_PortType cmService) {
+	public void loadPersonalContent(ContentManagerService_PortType cmService, JProgressBar bar) {
 		logger.debug("Loading Personal Content");
 		
 		// Create alphabetical grouping nodes so that a single pie chart will have a manageable number of slices
@@ -155,6 +191,7 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 				alphabetNode.addSize(size);
 				addSize(size);
 				logger.debug("The total size of " + item.getDefaultName() + " is " + item.getDataSize());
+				bar.setValue(bar.getValue() + 1);
 	        }
 			
 			// This object will persist in the tree so free up space
@@ -206,6 +243,30 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 	
 	public String toString() {
 		return getDefaultName();
+	}
+	
+	public int length(ContentManagerService_PortType cmService) {
+		int count=0;
+		// The length is the count of children
+		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass };
+	
+		// Sort options: none.
+		Sort[] sortBy = { new Sort()};
+	
+		// Query options; use the defaults.
+		QueryOptions options = new QueryOptions();
+	     
+		try {
+			// Make the query.
+			BaseClass[] folders = cmService.query(new SearchPathMultipleObject(getSearchPath()), properties, sortBy, options);
+			count = folders.length;
+			folders = null;
+	    }
+		catch(Exception e) {
+			logger.debug(e);
+		}
+
+		return count;
 	}
 
 	@Override
