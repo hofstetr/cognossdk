@@ -1,9 +1,13 @@
 package cloud.hofstetr.csgraph.controller;
 
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JMenuItem;
+import javax.swing.SwingWorker;
 
 import cloud.hofstetr.csgraph.model.ContentStore;
 import cloud.hofstetr.csgraph.view.ConnectDialog;
@@ -59,10 +63,36 @@ public class MainController {
 				connectDialog.dispose();
 				connectDialog = null;
 				progressDialog = new ProgressDialog();
-				ContentStore cs = new ContentStore(dispatcher, namespace, userid, password, progressDialog.getBar());
-				contentFrame.addTree(cs.getRoot());
-				progressDialog.dispose();
-				progressDialog = null;
+                progressDialog.getBar().setIndeterminate(true);
+				ContentStore cs = new ContentStore(dispatcher, namespace, userid, password);
+				progressDialog.getBar().setMaximum(cs.getChildCount());
+				cs.addPropertyChangeListener(new PropertyChangeListener() {
+	                @Override
+	                public void propertyChange(PropertyChangeEvent evt) {
+	                    if ("state".equalsIgnoreCase(evt.getPropertyName())) {
+	                        SwingWorker<?, ?> worker = (SwingWorker<?, ?>) evt.getSource();
+	                        switch (worker.getState()) {
+	                            case DONE:
+	                				progressDialog.dispose();
+	                				progressDialog = null;
+	                				contentFrame.addTree(cs.getRoot());
+	                                break;
+							case PENDING:
+								break;
+							case STARTED:
+								break;
+							default:
+								break;
+	                        }
+	                    } else if ("progress".equalsIgnoreCase(evt.getPropertyName())) {
+	                        // You could get the SwingWorker and use getProgress, but I'm lazy... 
+	                        System.out.println(EventQueue.isDispatchThread());
+	                        progressDialog.getBar().setIndeterminate(false);
+	                        progressDialog.getBar().setValue((Integer) evt.getNewValue());
+	                    }
+	                }
+	            });
+				cs.execute();
 			}
 			else {
 				connectDialog.dispose();

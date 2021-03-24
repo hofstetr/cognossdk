@@ -2,14 +2,12 @@ package cloud.hofstetr.csgraph.model;
 
 import java.util.Collections;
 
-import javax.swing.JProgressBar;
 import javax.swing.tree.*;
 
 import org.apache.log4j.Logger;
 
 import com.cognos.developer.schemas.bibus._3.BaseClass;
 import com.cognos.developer.schemas.bibus._3.ContentManagerService_PortType;
-import com.cognos.developer.schemas.bibus._3.Folder;
 import com.cognos.developer.schemas.bibus._3.Model;
 import com.cognos.developer.schemas.bibus._3.OrderEnum;
 import com.cognos.developer.schemas.bibus._3.Output;
@@ -99,112 +97,6 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 		return getDataSize();
 	}
 	
-	public void loadTeamContent(ContentManagerService_PortType cmService, JProgressBar bar) {
-		logger.debug("Loading Team Content");
-		
-		// Search properties: we need the defaultName, searchPath, type of object and size of data.
-		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass};
-	
-		// Sort options: ascending sort on the defaultName property.
-		Sort[] sortBy = { new Sort()};
-		sortBy[0].setOrder(OrderEnum.ascending);
-		sortBy[0].setPropName(PropEnum.defaultName);
-	
-		// Query options; use the defaults.
-		QueryOptions options = new QueryOptions();
-	     
-		try {
-			// Make the query.
-			BaseClass[] folders = cmService.query(new SearchPathMultipleObject(getSearchPath()), properties, sortBy, options);
-			
-			// Iterate over team content folders and crawl their children
-			for (int i = 0; i < folders.length; i++) {
-				Folder teamFolder = ((Folder)folders[i]);
-				String theSearchPath = teamFolder.getSearchPath().getValue();
-				String theDefaultName = teamFolder.getDefaultName().getValue();
-				logger.debug("Found folder " + theDefaultName);
-				String theType = teamFolder.getObjectClass().toString();
-				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, 0);
-				this.add(item);
-				logger.debug("Getting children of folder " + theDefaultName);
-				double size = item.loadChildren(cmService);
-				addSize(size);
-				logger.debug("The total size of " + item.getDefaultName() + " is " + item.getDataSize());
-				bar.setValue(bar.getValue() + 1);
-			}
-		}
-		catch(Exception e) {
-			logger.debug(e);
-		}
-		finally {
-			logger.debug("Finished loading Team Content");
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	public void loadPersonalContent(ContentManagerService_PortType cmService, JProgressBar bar) {
-		logger.debug("Loading Personal Content");
-		
-		// Create alphabetical grouping nodes so that a single pie chart will have a manageable number of slices
-		String alphabet = "abcdefghijklmnopqrstuvwxyz";
-		for (int i=0; i<alphabet.length(); i++) {
-			ContentItem ci = new ContentItem(alphabet.substring(i,i+1), "Folder", alphabet.substring(i,i+1), 0);
-			this.add(ci);
-		}
-		
-		// Need to fetch each personal my folder and then load the children
-		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass };
-	
-		// Sort options: ascending sort on the defaultName property.
-		Sort[] sortBy = { new Sort()};
-	
-		// Query options; use the defaults.
-		QueryOptions options = new QueryOptions();
-	     
-		try {
-			// Make the query.
-			BaseClass[] folders = cmService.query(new SearchPathMultipleObject(getSearchPath()), properties, sortBy, options);
-			logger.debug("There are " + folders.length + " children");
-			
-			// Iterate over personal folders and group them alphabetically
-			for (int i = 0; i < folders.length; i++) {
-				Folder myFolder = ((Folder)folders[i]);
-				String theSearchPath = myFolder.getSearchPath().getValue();
-				
-				String parentSearchPath = theSearchPath.substring(0, theSearchPath.length() - 27);
-				logger.debug("Getting account for " + theSearchPath);
-				BaseClass[] parent = cmService.query(new SearchPathMultipleObject(parentSearchPath), properties, sortBy, options);
-				String theDefaultName = parent[0].getDefaultName().getValue();
-				logger.debug("Found account " + theDefaultName);
-				String theType = myFolder.getObjectClass().toString();
-				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, 0);
-			
-				// Figure out which alphabet grouping to add this account to by first letter
-				int nodeIndex = alphabet.indexOf(theDefaultName.substring(0,1).toLowerCase());
-				ContentItem alphabetNode = ((ContentItem)this.getChildAt(nodeIndex));
-				logger.debug("Adding account " + theDefaultName + " to alphabetical group " + alphabetNode.getDefaultName());
-				alphabetNode.add(item);
-				Collections.sort(alphabetNode.children);
-				
-				logger.debug("Getting children of account " + theDefaultName);
-				double size = item.loadChildren(cmService);
-				alphabetNode.addSize(size);
-				addSize(size);
-				logger.debug("The total size of " + item.getDefaultName() + " is " + item.getDataSize());
-				bar.setValue(bar.getValue() + 1);
-	        }
-			
-			// This object will persist in the tree so free up space
-			folders = null;
-	    }
-		catch(Exception e) {
-			logger.debug(e);
-		}
-		finally {
-			logger.debug("Finished loading Personal Content");
-		}
-	}
-	
 	void addSize(double size) {
 		dataSize += size;
 	}
@@ -245,32 +137,15 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 		return getDefaultName();
 	}
 	
-	public int length(ContentManagerService_PortType cmService) {
-		int count=0;
-		// The length is the count of children
-		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass };
-	
-		// Sort options: none.
-		Sort[] sortBy = { new Sort()};
-	
-		// Query options; use the defaults.
-		QueryOptions options = new QueryOptions();
-	     
-		try {
-			// Make the query.
-			BaseClass[] folders = cmService.query(new SearchPathMultipleObject(getSearchPath()), properties, sortBy, options);
-			count = folders.length;
-			folders = null;
-	    }
-		catch(Exception e) {
-			logger.debug(e);
-		}
-
-		return count;
-	}
-
 	@Override
 	public int compareTo(ContentItem o) {
 		return this.defaultName.compareTo(o.getDefaultName());
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+    public void add(MutableTreeNode newChild) {
+        super.add(newChild);
+        Collections.sort(this.children);
+    }
 }

@@ -32,7 +32,6 @@ public class ProgressDialog extends JDialog {
 		this.setTitle("Progress");
 		this.getContentPane().add(progressPanel, BorderLayout.CENTER);
 		this.pack();
-		//this.setModal(true);
 		this.setVisible(true);
 	}
 	
