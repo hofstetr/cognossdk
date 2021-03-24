@@ -1,6 +1,5 @@
 package cloud.hofstetr.csgraph.controller;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -85,8 +84,6 @@ public class MainController {
 								break;
 	                        }
 	                    } else if ("progress".equalsIgnoreCase(evt.getPropertyName())) {
-	                        // You could get the SwingWorker and use getProgress, but I'm lazy... 
-	                        System.out.println(EventQueue.isDispatchThread());
 	                        progressDialog.getBar().setIndeterminate(false);
 	                        progressDialog.getBar().setValue((Integer) evt.getNewValue());
 	                    }
