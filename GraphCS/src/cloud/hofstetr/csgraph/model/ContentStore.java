@@ -171,7 +171,7 @@ public class ContentStore extends SwingWorker<Object, Object> {
 		logger.debug("Loading Personal Content");
 		
 		// Create alphabetical grouping nodes so that a single pie chart will have a manageable number of slices
-		String alphabet = "abcdefghijklmnopqrstuvwxyz";
+		String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		for (int i=0; i<alphabet.length(); i++) {
 			ContentItem ci = new ContentItem(alphabet.substring(i,i+1), "Folder", alphabet.substring(i,i+1), 0);
 			PersonalContent.add(ci);
