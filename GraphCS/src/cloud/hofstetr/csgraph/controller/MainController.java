@@ -6,7 +6,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JMenuItem;
-import javax.swing.SwingWorker;
 import javax.swing.WindowConstants;
 
 import cloud.hofstetr.csgraph.model.ContentStore;
@@ -69,8 +68,8 @@ public class MainController {
 				cs.addPropertyChangeListener(new PropertyChangeListener() {
 	                @Override
 	                public void propertyChange(PropertyChangeEvent evt) {
+                        ContentStore worker = (ContentStore) evt.getSource();
 	                    if ("state".equalsIgnoreCase(evt.getPropertyName())) {
-	                        SwingWorker<?, ?> worker = (SwingWorker<?, ?>) evt.getSource();
 	                        switch (worker.getState()) {
 	                            case DONE:
 	                				progressDialog.dispose();
@@ -85,12 +84,13 @@ public class MainController {
 								break;
 	                        }
 	                    } else if ("progress".equalsIgnoreCase(evt.getPropertyName())) {
-	                        progressDialog.getBar().setIndeterminate(false);
-	                        progressDialog.getBar().setStringPainted(true);
 	                        progressDialog.getBar().setValue((Integer) evt.getNewValue());
+	                        progressDialog.getBar().setString(cs.getCurrentCount() + " / " + cs.getChildCount());
 	                    }
 	                }
 	            });
+            	progressDialog.getBar().setIndeterminate(false);
+                progressDialog.getBar().setStringPainted(true);
 				cs.execute();
 			}
 			else {
