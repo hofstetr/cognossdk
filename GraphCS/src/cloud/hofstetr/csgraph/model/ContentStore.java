@@ -32,6 +32,7 @@ public class ContentStore extends SwingWorker<Object, Object> {
 	private String BiBus_H = "biBusHeader";
 	static Logger logger = Logger.getLogger(ContentStore.class.getName());
 	private int ChildCount = 0;
+	private int CurrentCount = 0;
 	
     public ContentItem getRoot() {
 		return Root;
@@ -62,7 +63,7 @@ public class ContentStore extends SwingWorker<Object, Object> {
 			TeamContent = new ContentItem("Team Content", "Folder", "/content/*", 0);
 			PersonalContent = new ContentItem("Personal Content", "Folder", "CAMID(\"" + namespace + "\")//account/folder[@name='My Folders']", 0);
 			ChildCount = length(TeamContent.getSearchPath()) + length(PersonalContent.getSearchPath());
-
+			CurrentCount = 0;
 		} catch (MalformedURLException e) {
 			logger.info("Invalid URL encountered");
 		} catch (ServiceException e) {
@@ -150,7 +151,11 @@ public class ContentStore extends SwingWorker<Object, Object> {
 				double size = item.loadChildren(cmService);
 				TeamContent.addSize(size);
 				logger.debug("The total size of " + item.getDefaultName() + " is " + item.getDataSize());
-				this.setProgress(this.getProgress() + 1);
+				
+				// Calculate progress on a 100 scale due to SwingWorker limitations
+				CurrentCount++;
+				int progress = CurrentCount / ChildCount;
+				this.setProgress(progress);
 			}
 		}
 		catch(Exception e) {
@@ -209,7 +214,11 @@ public class ContentStore extends SwingWorker<Object, Object> {
 				alphabetNode.addSize(size);
 				PersonalContent.addSize(size);
 				logger.debug("The total size of " + item.getDefaultName() + " is " + item.getDataSize());
-				this.setProgress(this.getProgress() + 1);
+				
+				// Calculate progress on a 100 scale due to SwingWorker limitations
+				CurrentCount++;
+				int progress = CurrentCount / ChildCount;
+				this.setProgress(progress);
 	        }
 			
 			// This object will persist in the tree so free up space
@@ -263,5 +272,9 @@ public class ContentStore extends SwingWorker<Object, Object> {
 
 	public int getChildCount() {
 		return ChildCount;
+	}
+
+	public int getCurrentCount() {
+		return CurrentCount;
 	}
 }

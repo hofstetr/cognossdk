@@ -7,6 +7,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JMenuItem;
 import javax.swing.SwingWorker;
+import javax.swing.WindowConstants;
 
 import cloud.hofstetr.csgraph.model.ContentStore;
 import cloud.hofstetr.csgraph.view.ConnectDialog;
@@ -62,9 +63,9 @@ public class MainController {
 				connectDialog.dispose();
 				connectDialog = null;
 				progressDialog = new ProgressDialog();
+				progressDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
                 progressDialog.getBar().setIndeterminate(true);
 				ContentStore cs = new ContentStore(dispatcher, namespace, userid, password);
-				progressDialog.getBar().setMaximum(cs.getChildCount());
 				cs.addPropertyChangeListener(new PropertyChangeListener() {
 	                @Override
 	                public void propertyChange(PropertyChangeEvent evt) {
@@ -85,6 +86,7 @@ public class MainController {
 	                        }
 	                    } else if ("progress".equalsIgnoreCase(evt.getPropertyName())) {
 	                        progressDialog.getBar().setIndeterminate(false);
+	                        progressDialog.getBar().setStringPainted(true);
 	                        progressDialog.getBar().setValue((Integer) evt.getNewValue());
 	                    }
 	                }
