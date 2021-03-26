@@ -157,7 +157,6 @@ public class ContentStore extends SwingWorker<Object, Object> {
 				double progress = (CurrentCount / ChildCount) * 100.0;
 				logger.debug((int)CurrentCount + "/" + (int)ChildCount + "=" + (int)progress + "% complete");
 				this.setProgress((int) progress);
-				//publish((int)progress);
 			}
 		}
 		catch(Exception e) {
@@ -222,7 +221,6 @@ public class ContentStore extends SwingWorker<Object, Object> {
 				double progress = (int) ((CurrentCount / ChildCount) * 100.0);
 				logger.debug((int)CurrentCount + "/" + (int)ChildCount + "=" + (int)progress + "% complete");
 				this.setProgress((int)progress);
-				//publish((int)progress);
 	        }
 			
 			// This object will persist in the tree so free up space
