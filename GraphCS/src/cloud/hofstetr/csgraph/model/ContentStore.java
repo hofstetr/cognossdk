@@ -155,6 +155,7 @@ public class ContentStore extends SwingWorker<Object, Object> {
 				// Calculate progress on a 100 scale due to SwingWorker limitations
 				CurrentCount++;
 				int progress = (CurrentCount / ChildCount) * 100;
+				logger.debug(progress + "% complete");
 				this.setProgress(progress);
 			}
 		}
@@ -218,6 +219,7 @@ public class ContentStore extends SwingWorker<Object, Object> {
 				// Calculate progress on a 100 scale due to SwingWorker limitations
 				CurrentCount++;
 				int progress = (CurrentCount / ChildCount) * 100;
+				logger.debug(progress + "% complete");
 				this.setProgress(progress);
 	        }
 			
