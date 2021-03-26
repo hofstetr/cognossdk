@@ -90,6 +90,7 @@ public class MainController {
 	                }
 	            });
             	progressDialog.getBar().setIndeterminate(false);
+            	progressDialog.getBar().setString(cs.getCurrentCount() + " / " + cs.getChildCount());
                 progressDialog.getBar().setStringPainted(true);
 				cs.execute();
 			}
