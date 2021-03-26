@@ -31,8 +31,8 @@ public class ContentStore extends SwingWorker<Object, Object> {
 	private String BiBus_NS = "http://developer.cognos.com/schemas/bibus/3/";
 	private String BiBus_H = "biBusHeader";
 	static Logger logger = Logger.getLogger(ContentStore.class.getName());
-	private int ChildCount = 0;
-	private int CurrentCount = 0;
+	private double ChildCount = 0;
+	private double CurrentCount = 0;
 	
     public ContentItem getRoot() {
 		return Root;
@@ -154,9 +154,9 @@ public class ContentStore extends SwingWorker<Object, Object> {
 				
 				// Calculate progress on a 100 scale due to SwingWorker limitations
 				CurrentCount++;
-				int progress = (int) ((CurrentCount / ChildCount) * 100.0);
+				double progress = (CurrentCount / ChildCount) * 100.0;
 				logger.debug(CurrentCount + "/" + ChildCount + "=" + progress + "% complete");
-				this.setProgress(progress);
+				this.setProgress((int) progress);
 				this.firePropertyChange("progress", 0, 0);
 			}
 		}
@@ -219,9 +219,9 @@ public class ContentStore extends SwingWorker<Object, Object> {
 				
 				// Calculate progress on a 100 scale due to SwingWorker limitations
 				CurrentCount++;
-				int progress = (int) ((CurrentCount / ChildCount) * 100.0);
+				double progress = (int) ((CurrentCount / ChildCount) * 100.0);
 				logger.debug(CurrentCount + "/" + ChildCount + "=" + progress + "% complete");
-				this.setProgress(progress);
+				this.setProgress((int) progress);
 				this.firePropertyChange("progress", 0, 0);
 	        }
 			
@@ -274,11 +274,11 @@ public class ContentStore extends SwingWorker<Object, Object> {
 		return null;
 	}
 
-	public int getChildCount() {
+	public double getChildCount() {
 		return ChildCount;
 	}
 
-	public int getCurrentCount() {
+	public double getCurrentCount() {
 		return CurrentCount;
 	}
 }
