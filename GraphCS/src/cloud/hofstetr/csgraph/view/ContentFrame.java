@@ -10,7 +10,7 @@ import cloud.hofstetr.csgraph.model.ContentItem;
 public class ContentFrame extends JFrame {
 	private static final long serialVersionUID = 8727700150613116574L;
 	private ContentPanel contentPanel;
-	private ImageIcon img = new ImageIcon("src/type_pie.gif");
+	private ImageIcon img = new ImageIcon("images/type_pie.gif");
 	
 	public ContentFrame () {
 		super("Content Store Grapher");
