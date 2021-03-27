@@ -60,8 +60,8 @@ public class ContentStore extends SwingWorker<Object, Object> {
 			}
 			
 			// Create team content and personal content nodes
-			TeamContent = new ContentItem("Team Content", "Folder", "/content/*", 0);
-			PersonalContent = new ContentItem("Personal Content", "Folder", "CAMID(\"" + namespace + "\")//account/folder[@name='My Folders']", 0);
+			TeamContent = new ContentItem("Team Content", "TeamFolder", "/content/*", 0);
+			PersonalContent = new ContentItem("Personal Content", "MyFolder", "CAMID(\"" + namespace + "\")//account/folder[@name='My Folders']", 0);
 			ChildCount = length(TeamContent.getSearchPath()) + length(PersonalContent.getSearchPath());
 			CurrentCount = 0;
 		} catch (MalformedURLException e) {

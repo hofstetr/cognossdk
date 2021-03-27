@@ -40,6 +40,7 @@ public class ContentPanel extends JPanel {
 	public void addTreePanel(ContentItem root) {
 		logger.debug("Creating Tree panel");
 		tree = new JTree(root);
+		tree.setCellRenderer(new TreeRenderer());
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
 		    public void valueChanged(TreeSelectionEvent e) {
