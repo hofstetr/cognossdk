@@ -1,6 +1,7 @@
 package cloud.hofstetr.csgraph.view;
 
 import java.awt.Component;
+import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
@@ -10,11 +11,11 @@ import cloud.hofstetr.csgraph.model.ContentItem;
 
 public class TreeRenderer extends DefaultTreeCellRenderer {
 	private static final long serialVersionUID = 8727700150613116574L;
-	private ImageIcon MyFolder = new ImageIcon("images/icon_myfolder.gif");
-	private ImageIcon TeamFolder = new ImageIcon("images/icon_publicfolder.gif");
-	private ImageIcon Folder = new ImageIcon("images/icon_folder.gif");
-	private ImageIcon Model = new ImageIcon("images/icon_model.gif");
-	private ImageIcon Report = new ImageIcon("images/icon_report.gif");
+	private ImageIcon MyFolder = new ImageIcon(Toolkit.getDefaultToolkit().getImage("icon_myfolder.gif"));
+	private ImageIcon TeamFolder = new ImageIcon(Toolkit.getDefaultToolkit().getImage("icon_publicfolder.gif"));
+	private ImageIcon Folder = new ImageIcon(Toolkit.getDefaultToolkit().getImage("icon_folder.gif"));
+	private ImageIcon Model = new ImageIcon(Toolkit.getDefaultToolkit().getImage("icon_model.gif"));
+	private ImageIcon Report = new ImageIcon(Toolkit.getDefaultToolkit().getImage("icon_report.gif"));
 	
 	public Component getTreeCellRendererComponent(
             JTree tree,
