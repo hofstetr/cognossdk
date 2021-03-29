@@ -51,13 +51,13 @@ public class TreeRenderer extends DefaultTreeCellRenderer {
 	        case "module":
 	            setIcon(Model);
 	            break;
-	        case "dashboard":
+	        case "exploration":
 	        	setIcon(Dashboard);
 	        	break;
-	        case "uploaded file":
+	        case "uploadedFile":
 	        	setIcon(Upload);
 	        	break;
-	        case "dataset2":
+	        case "dataSet2":
 	        	setIcon(Dataset);
 	        	break;
 	        default: 

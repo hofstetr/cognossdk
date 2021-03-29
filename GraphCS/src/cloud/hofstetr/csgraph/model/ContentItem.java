@@ -70,7 +70,7 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 					}
 					logger.debug("Specification length of " + theDefaultName + " with type of " + theType + " is " + dataSize);
 	        	} else
-				// Get the report specification size if this is a report object
+				// Get the model specification size if this is a model object
 				if (siblings[i] instanceof Model) {
 					Model model = (Model)siblings[i];
 					if (model.getModel() != null) {
