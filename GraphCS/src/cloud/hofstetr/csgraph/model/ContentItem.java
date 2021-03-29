@@ -53,7 +53,7 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 			for (int i = 0; i < siblings.length; i++) {
 				String theDefaultName = siblings[i].getDefaultName().getValue();
 				String theSearchPath = siblings[i].getSearchPath().getValue();
-				String theType = siblings[i].getObjectClass().toString();
+				String theType = siblings[i].getObjectClass().getValue().toString();
 				double dataSize = 0;
 				
 				// Get the output size if this is an output object
