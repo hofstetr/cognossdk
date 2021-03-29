@@ -144,7 +144,7 @@ public class ContentStore extends SwingWorker<Object, Object> {
 				String theSearchPath = teamFolder.getSearchPath().getValue();
 				String theDefaultName = teamFolder.getDefaultName().getValue();
 				logger.debug("Found folder " + theDefaultName);
-				String theType = teamFolder.getObjectClass().toString();
+				String theType = teamFolder.getObjectClass().getValue().toString();
 				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, 0);
 				TeamContent.add(item);
 				logger.debug("Getting children of folder " + theDefaultName);
@@ -173,7 +173,7 @@ public class ContentStore extends SwingWorker<Object, Object> {
 		// Create alphabetical grouping nodes so that a single pie chart will have a manageable number of slices
 		String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		for (int i=0; i<alphabet.length(); i++) {
-			ContentItem ci = new ContentItem(alphabet.substring(i,i+1), "Folder", alphabet.substring(i,i+1), 0);
+			ContentItem ci = new ContentItem(alphabet.substring(i,i+1), "folder", alphabet.substring(i,i+1), 0);
 			PersonalContent.add(ci);
 		}
 		
@@ -201,7 +201,7 @@ public class ContentStore extends SwingWorker<Object, Object> {
 				BaseClass[] parent = cmService.query(new SearchPathMultipleObject(parentSearchPath), properties, sortBy, options);
 				String theDefaultName = parent[0].getDefaultName().getValue();
 				logger.debug("Found account " + theDefaultName);
-				String theType = myFolder.getObjectClass().toString();
+				String theType = myFolder.getObjectClass().getValue().toString();
 				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, 0);
 			
 				// Figure out which alphabet grouping to add this account to by first letter

@@ -14,6 +14,9 @@ public class TreeRenderer extends DefaultTreeCellRenderer {
 	private ImageIcon Folder = new ImageIcon(getClass().getResource("/images/icon_folder.gif"));
 	private ImageIcon Model = new ImageIcon(getClass().getResource("/images/icon_model.gif"));
 	private ImageIcon Report = new ImageIcon(getClass().getResource("/images/icon_report.gif"));
+	private ImageIcon Dashboard = new ImageIcon(getClass().getResource("/images/icon_dashboard.gif"));
+	private ImageIcon Dataset = new ImageIcon(getClass().getResource("/images/icon_dataset.gif"));
+	private ImageIcon Upload = new ImageIcon(getClass().getResource("/images/icon_result_excel.gif"));
 	
 	public Component getTreeCellRendererComponent(
             JTree tree,
@@ -45,8 +48,18 @@ public class TreeRenderer extends DefaultTreeCellRenderer {
 	            break;
 	        case "model":
 	        case "package":
+	        case "module":
 	            setIcon(Model);
 	            break;
+	        case "dashboard":
+	        	setIcon(Dashboard);
+	        	break;
+	        case "uploaded file":
+	        	setIcon(Upload);
+	        	break;
+	        case "dataset2":
+	        	setIcon(Dataset);
+	        	break;
 	        default: 
 	            break;
 		}
