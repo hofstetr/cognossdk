@@ -60,7 +60,7 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 				if (siblings[i] instanceof Output) {
 					Output reportOutput = (Output)siblings[i];
 					dataSize = reportOutput.getDataSize().getValue().doubleValue();
-					logger.debug("Output size of " + theDefaultName + " is " + dataSize);
+					logger.debug("Output size of " + theDefaultName + " with type of " + theType + " is " + dataSize);
 	        	} else
 				// Get the report specification size if this is a report object
 				if (siblings[i] instanceof Report) {
@@ -68,7 +68,7 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 					if (report.getSpecification() != null) {
 						dataSize = report.getSpecification().getValue().length();
 					}
-					logger.debug("Specification length of " + theDefaultName + " is " + dataSize);
+					logger.debug("Specification length of " + theDefaultName + " with type of " + theType + " is " + dataSize);
 	        	} else
 				// Get the report specification size if this is a report object
 				if (siblings[i] instanceof Model) {
@@ -76,7 +76,7 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 					if (model.getModel() != null) {
 						dataSize = model.getModel().getValue().length();
 					}
-					logger.debug("Model length of " + theDefaultName + " is " + dataSize);
+					logger.debug("Model length of " + theDefaultName + " with type of " + theType + " is " + dataSize);
 	        	}
 				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, dataSize);
 				addSize(item.loadChildren(cmService));

@@ -1,7 +1,0 @@
-2021-03-29 14:37:29,294 [main] DEBUG cloud.hofstetr.csgraph.view.ContentPanel - Creating main content panel
-2021-03-29 14:37:29,300 [main] DEBUG cloud.hofstetr.csgraph.view.ContentPanel - Adding split pane to main content panel
-2021-03-29 14:37:29,305 [main] DEBUG cloud.hofstetr.csgraph.view.ContentPanel - Finished creating main content panel
-2021-03-29 14:37:29,328 [main] DEBUG cloud.hofstetr.csgraph.view.ContentPanel - Creating Tree panel
-2021-03-29 14:37:29,564 [main] DEBUG cloud.hofstetr.csgraph.view.ContentPanel - Updating divider position
-2021-03-29 14:37:29,564 [main] DEBUG cloud.hofstetr.csgraph.view.ContentPanel - Finished updating divider position
-2021-03-29 14:37:29,564 [main] DEBUG cloud.hofstetr.csgraph.view.ContentPanel - Finished creating Tree panel
