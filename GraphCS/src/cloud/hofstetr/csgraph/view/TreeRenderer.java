@@ -37,14 +37,14 @@ public class TreeRenderer extends DefaultTreeCellRenderer {
 	        case "TeamFolder":
 	            setIcon(TeamFolder);
 	            break;
-	        case "Folder":
+	        case "folder":
 	            setIcon(Folder);
 	            break;
-	        case "Report":
+	        case "report":
 	            setIcon(Report);
 	            break;
-	        case "Model":
-	        case "Package":
+	        case "model":
+	        case "package":
 	            setIcon(Model);
 	            break;
 	        default: 

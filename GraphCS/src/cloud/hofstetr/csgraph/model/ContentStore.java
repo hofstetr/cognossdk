@@ -25,7 +25,7 @@ import com.cognos.org.apache.axis.message.SOAPHeaderElement;
 public class ContentStore extends SwingWorker<Object, Object> {
 	private ContentManagerService_ServiceLocator cmServiceLocator = null;
 	private ContentManagerService_PortType cmService = null;
-	private ContentItem Root = new ContentItem("Content Store", "Folder", "/", 100);
+	private ContentItem Root = new ContentItem("Content Store", "folder", "/", 100);
 	private ContentItem TeamContent;
 	private ContentItem PersonalContent;
 	private String BiBus_NS = "http://developer.cognos.com/schemas/bibus/3/";
