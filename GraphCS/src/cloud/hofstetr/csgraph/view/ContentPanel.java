@@ -70,7 +70,7 @@ public class ContentPanel extends JPanel {
 	}
 	
 	public void updatePiePanel(ContentItem node) {
-		logger.debug("Updating Pie chart");
+		logger.info("Updating Pie chart");
 		DefaultPieDataset dataset=new DefaultPieDataset();
 		
 		for(int i=0; i<node.getChildCount(); i++) {
@@ -83,7 +83,7 @@ public class ContentPanel extends JPanel {
 			}
 			
 			// The dataset is the size of the children under the selected node
-			logger.debug("There are " + dataset.getItemCount() + " slices");
+			logger.info("There are " + dataset.getItemCount() + " slices");
 		}
 		JFreeChart chart = ChartFactory.createPieChart3D(node.getDefaultName(), dataset, false, true, false);  
 			  
@@ -102,7 +102,7 @@ public class ContentPanel extends JPanel {
 		ChartPanel panel = new ChartPanel(chart);
 		SplitPane.setRightComponent(panel);
 		updateDividerLocation();
-		logger.debug("Finished updating Pie chart");
+		logger.info("Finished updating Pie chart");
 	}
 	
 	public void updateDividerLocation() {

@@ -48,7 +48,7 @@ public class ContentStore extends SwingWorker<Object, Object> {
 		
 		try {
 			java.net.URL serverURL = new java.net.URL(dispatcher);
-			logger.debug("Connecting to Cognos at: " + dispatcher);
+			logger.info("Connecting to Cognos at: " + dispatcher);
 			cmService = cmServiceLocator.getcontentManagerService(serverURL);
 			
 			if (userid == null) {
@@ -122,7 +122,7 @@ public class ContentStore extends SwingWorker<Object, Object> {
 	 }
 	 
 	 public void loadTeamContent() {
-		logger.debug("Loading Team Content");
+		logger.info("Loading Team Content");
 		
 		// Search properties: we need the defaultName, searchPath, type of object and size of data.
 		PropEnum[] properties = { PropEnum.defaultName, PropEnum.searchPath, PropEnum.objectClass};
@@ -176,15 +176,15 @@ public class ContentStore extends SwingWorker<Object, Object> {
 			}
 		}
 		catch(Exception e) {
-			logger.debug(e);
+			logger.info(e);
 		}
 		finally {
-			logger.debug("Finished loading Team Content");
+			logger.info("Finished loading Team Content");
 		}
 	}
 	
 	public void loadPersonalContent() {
-		logger.debug("Loading Personal Content");
+		logger.info("Loading Personal Content");
 		
 		// Create alphabetical grouping nodes so that a single pie chart will have a manageable number of slices
 		String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -243,10 +243,10 @@ public class ContentStore extends SwingWorker<Object, Object> {
 			folders = null;
 	    }
 		catch(Exception e) {
-			logger.debug(e);
+			logger.info(e);
 		}
 		finally {
-			logger.debug("Finished loading Personal Content");
+			logger.info("Finished loading Personal Content");
 		}
 	}
 	
@@ -268,7 +268,7 @@ public class ContentStore extends SwingWorker<Object, Object> {
 			folders = null;
 	    }
 		catch(Exception e) {
-			logger.debug(e);
+			logger.info(e);
 		}
 
 		return count;
@@ -283,7 +283,7 @@ public class ContentStore extends SwingWorker<Object, Object> {
 		loadPersonalContent();
 		Root.add(PersonalContent);
 		
-		logger.debug("Logging off");
+		logger.info("Logging off");
 		cmService.logoff();
 		return null;
 	}
