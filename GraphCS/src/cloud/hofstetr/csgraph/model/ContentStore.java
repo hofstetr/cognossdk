@@ -19,6 +19,7 @@ import com.cognos.developer.schemas.bibus._3.QueryOptions;
 import com.cognos.developer.schemas.bibus._3.SearchPathMultipleObject;
 import com.cognos.developer.schemas.bibus._3.Sort;
 import com.cognos.developer.schemas.bibus._3.XmlEncodedXML;
+import com.cognos.developer.schemas.bibus._3._package;
 import com.cognos.org.apache.axis.client.Stub;
 import com.cognos.org.apache.axis.message.SOAPHeaderElement;
 
@@ -140,14 +141,29 @@ public class ContentStore extends SwingWorker<Object, Object> {
 			
 			// Iterate over team content folders and crawl their children
 			for (int i = 0; i < folders.length; i++) {
-				Folder teamFolder = ((Folder)folders[i]);
-				String theSearchPath = teamFolder.getSearchPath().getValue();
-				String theDefaultName = teamFolder.getDefaultName().getValue();
-				logger.debug("Found folder " + theDefaultName);
-				String theType = teamFolder.getObjectClass().getValue().toString();
+				String theSearchPath = "";
+				String theDefaultName = "";
+				String theType = "";
+				
+				// Get the attributes for the correct object type
+				if (folders[i] instanceof Folder) {
+					Folder teamFolder = ((Folder)folders[i]);
+					theSearchPath = teamFolder.getSearchPath().getValue();
+					theDefaultName = teamFolder.getDefaultName().getValue();
+					logger.debug("Found folder " + theDefaultName);
+					theType = teamFolder.getObjectClass().getValue().toString();
+	        	} else
+	        	if (folders[i] instanceof _package) {
+	        		_package teamPackage = ((_package)folders[i]);
+	        		theSearchPath = teamPackage.getSearchPath().getValue();
+					theDefaultName = teamPackage.getDefaultName().getValue();
+					logger.debug("Found package " + theDefaultName);
+					theType = teamPackage.getObjectClass().getValue().toString();
+	        	}
+				
 				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, 0);
 				TeamContent.add(item);
-				logger.debug("Getting children of folder " + theDefaultName);
+				logger.debug("Getting children of " + theDefaultName);
 				double size = item.loadChildren(cmService);
 				TeamContent.addSize(size);
 				logger.debug("The total size of " + item.getDefaultName() + " is " + item.getDataSize());
