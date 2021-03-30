@@ -32,6 +32,8 @@ public class TreeRenderer extends DefaultTreeCellRenderer {
 		            expanded, leaf, row,
 		            hasFocus);
 		
+		setToolTipText(((ContentItem)value).getObjectType());
+		
 		String itemType = ((ContentItem)value).getObjectType();
 		switch(itemType) {
 			case "MyFolder":

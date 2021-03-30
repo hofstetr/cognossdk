@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.ToolTipManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeSelectionModel;
@@ -41,6 +42,7 @@ public class ContentPanel extends JPanel {
 		logger.debug("Creating Tree panel");
 		tree = new JTree(root);
 		tree.setCellRenderer(new TreeRenderer());
+		ToolTipManager.sharedInstance().registerComponent(tree);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
 		    public void valueChanged(TreeSelectionEvent e) {
