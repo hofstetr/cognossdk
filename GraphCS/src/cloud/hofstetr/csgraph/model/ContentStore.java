@@ -221,7 +221,7 @@ public class ContentStore extends SwingWorker<Object, Object> {
 				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, 0);
 			
 				// Figure out which alphabet grouping to add this account to by first letter
-				int nodeIndex = alphabet.indexOf(theDefaultName.substring(0,1).toLowerCase());
+				int nodeIndex = alphabet.indexOf(theDefaultName.substring(0,1).toUpperCase());
 				ContentItem alphabetNode = ((ContentItem)PersonalContent.getChildAt(nodeIndex));
 				logger.debug("Adding account " + theDefaultName + " to alphabetical group " + alphabetNode.getDefaultName());
 				alphabetNode.add(item);
