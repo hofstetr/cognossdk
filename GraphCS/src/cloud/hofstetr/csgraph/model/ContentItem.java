@@ -31,6 +31,7 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 		this.setObjectType(type);
 		this.setSearchPath(path);
 		this.setDataSize(size);
+		logger.debug("Creating item " + getDefaultName() + " of type " + getObjectType() + " with size of " + getDataSize());
 	}
      
 	public double loadChildren(ContentManagerService_PortType cmService) {
