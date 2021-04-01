@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import com.cognos.developer.schemas.bibus._3.BaseClass;
 import com.cognos.developer.schemas.bibus._3.ContentManagerService_PortType;
+import com.cognos.developer.schemas.bibus._3.Exploration;
 import com.cognos.developer.schemas.bibus._3.Model;
 import com.cognos.developer.schemas.bibus._3.OrderEnum;
 import com.cognos.developer.schemas.bibus._3.Output;
@@ -56,10 +57,11 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 				String theType = siblings[i].getObjectClass().getValue().toString();
 				double dataSize = 0;
 				
-				// Get the output size if this is an output object
+				// Get the output size if this is an output object which can be report, dataset or uploaded file
 				if (siblings[i] instanceof Output) {
 					Output reportOutput = (Output)siblings[i];
 					dataSize = reportOutput.getDataSize().getValue().doubleValue();
+					addSize(dataSize);
 					logger.debug("Output size of " + theDefaultName + " with type of " + theType + " is " + dataSize);
 	        	} else
 				// Get the report specification size if this is a report object
@@ -77,7 +79,16 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 						dataSize = model.getModel().getValue().length();
 					}
 					logger.debug("Model length of " + theDefaultName + " with type of " + theType + " is " + dataSize);
-	        	}
+	        	} else
+					// Get the dash board specification size if this is an exploration object
+					if (siblings[i] instanceof Exploration) {
+						Exploration dashboard = (Exploration)siblings[i];
+						if (dashboard.getSpecification() != null) {
+							dataSize = dashboard.getSpecification().getValue().length();
+						}
+						logger.debug("Specification length of " + theDefaultName + " with type of " + theType + " is " + dataSize);
+		        }
+				
 				ContentItem item = new ContentItem(theDefaultName, theType, theSearchPath, dataSize);
 				addSize(item.loadChildren(cmService));
 				this.add(item);
@@ -87,7 +98,7 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 			siblings = null;
 	    }
 		catch(Exception e) {
-			logger.debug(e);
+			logger.info(e);
 		}
 	    logger.debug("The total size of " + getDefaultName() + " is " + getDataSize());
 	    logger.debug("Finished loading children of " + getDefaultName());
