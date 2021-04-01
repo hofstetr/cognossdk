@@ -62,7 +62,6 @@ public class ContentItem extends DefaultMutableTreeNode implements Comparable<Co
 				if (siblings[i] instanceof Output) {
 					Output reportOutput = (Output)siblings[i];
 					dataSize = reportOutput.getDataSize().getValue().doubleValue();
-					addSize(dataSize);
 					logger.debug("Output size of " + theDefaultName + " with type of " + theType + " is " + dataSize);
 	        	} else
 				// Get the report specification size if this is a report object
